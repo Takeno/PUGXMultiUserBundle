@@ -72,6 +72,22 @@ class UserManager extends BaseUserManager
     public function findUserBy(array $criteria)
     {        
         $classes = $this->userDiscriminator->getClasses();
+        $class = $this->userDiscriminator->getClass();
+        
+        /* Force current class to be the first */
+        
+        if($class && $class !== $classes[0]) {
+            $classesLength = count($classes);
+            for($i = 1; $i < $classesLength; $i++) {
+                if($class === $classes[$i]) {
+                    $tmp = $classes[0];
+                    $classes[0] = $classes[$i];
+                    $classes[$i] = $tmp;
+                    break;
+                }
+            }
+        }
+        
                 
         foreach ($classes as $class) {
 
